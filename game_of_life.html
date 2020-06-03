@@ -3,116 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Game of Life</title>
-
-    <script type="application/javascript">
-        var grid = [];
-        var rows, cols;
-        const ALIVE = '#FF4500', DEAD = '#000000';
-
-        function start(width ,height) {
-            rows = Math.floor(height / 4);
-            cols = Math.floor( width / 4);
-            for (let i = 0; i < rows; i++) {
-                grid[i] = [];
-            }
-
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < cols; j++){
-                    grid[i][j] = Math.floor(Math.random() * 100) % 2;
-                }
-            }
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        function draw() {
-            let canvas = document.getElementById('gameCanvas');
-            if (canvas.getContext) {
-                let ctx = canvas.getContext('2d');
-                ctx.clearRect(0,0,canvas.width, canvas.height);
-                for (let i = 0; i < rows; i++) {
-                    for (let j = 0; j < cols; j++){
-                        if (grid[i][j] === 1){
-                            ctx.fillStyle = ALIVE;
-                            ctx.fillRect( i * 4, j * 4, 4, 4);
-                        }
-                        else {
-                            ctx.fillStyle = DEAD;
-                            ctx.fillRect( i * 4, j * 4, 4, 4);
-                        }
-                    }
-                }
-            }
-        }
-
-        function gridUpdate() {
-            let surrounding;
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < cols; j++) {
-                    surrounding = countSurrounding(i,j);
-                    if(surrounding === 3 ||  (grid[i][j] === 1 && surrounding === 2))
-                        grid[i][j] = 1;
-                    else
-                        grid[i][j] = 0;
-                }
-            }
-        }
-
-        function countSurrounding(row, col) {
-            let surrounding = 0;
-            if (row-1 >= 0) {
-                if (grid[row-1][col] === 1)
-                    surrounding++;
-            }
-            if (row-1 >= 0 && col-1 >= 0) {
-                if (grid[row-1][col-1] === 1)
-                    surrounding++;
-            }
-            if (row-1 >= 0 && col+1 < cols) {
-                if (grid[row-1][col+1] === 1)
-                    surrounding++;
-            }
-            if (col-1 >= 0) {
-                if (grid[row][col-1] === 1)
-                    surrounding++;
-            }
-            if (col+1 < cols) {
-                if (grid[row][col+1] === 1)
-                    surrounding++;
-            }
-            if (row+1 < rows) {
-                if (grid[row+1][col] === 1)
-                    surrounding++;
-            }
-            if (row+1 < rows && col-1 >= 0) {
-                if (grid[row+1][col-1] === 1)
-                    surrounding++;
-            }
-            if (row+1 < rows && col+1 < cols) {
-                if (grid[row+1][col+1] === 1)
-                    surrounding++;
-            }
-            return surrounding;
-        }
-
-
-        function gameLoop() {
-            draw();
-            gridUpdate();
-            sleep(50);
-            requestAnimationFrame(gameLoop);
-        }
-
-
-    </script>
-
+    <script src="game.js"></script>
     <style type="text/css">
         canvas { border: 1px solid black; }
     </style>
 </head>
-<body onload="start(800,800);gameLoop();">
-<canvas id="gameCanvas" width="800" height="800"></canvas>
+<body onload="start(800,800)">
+    <canvas id="gameCanvas" width="800" height="800"></canvas>
+    <button onclick="gameLoop();">Start</button>
+    <button onclick="stopLoop();">Stop</button>
+    <button onclick="clearGame();">Clear</button>
 </body>
 </html>
