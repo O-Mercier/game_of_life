@@ -3,16 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Game of Life</title>
-    <canvas id="gameCanvas" width="500" height="500">
-    </canvas>
 
-    <script>
-        var canvas = document.getElementById('gameCanvas');
+    <script type="application/javascript">
+        var grid = [];
+        var rows, cols;
+        const ALIVE = '#FF4500', DEAD = '#000000';
+
+        function start(width ,height) {
+            rows = Math.floor(height / 4), cols = Math.floor( width / 4);
+            for (let i = 0; i < rows; i++) {
+                grid[i] = [];
+            }
+
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++){
+                    grid[i][j] = Math.floor(Math.random() * 100) % 2;
+                }
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function draw() {
+            let canvas = document.getElementById('gameCanvas');
+            if (canvas.getContext) {
+                let ctx = canvas.getContext('2d');
+                for (let i = 0; i < rows; i++) {
+                    for (let j = 0; j < cols; j++){
+                        if (grid[i][j] === 1){
+                            ctx.fillStyle = ALIVE;
+                            ctx.fillRect( i * 4, j * 4, 4, 4);
+                        }
+                        else {
+                            ctx.fillStyle = DEAD;
+                            ctx.fillRect( i * 4, j * 4, 4, 4);
+                        }
+                    }
+                }
+            }
+        }
+
+        function evaluateCell(row,col){
+            var closeCells = grid[j – 1][k – 1];
+
+        }
+
 
     </script>
 
+    <style type="text/css">
+        canvas { border: 1px solid black; }
+    </style>
 </head>
-<body>
-
+<body onload="start(800,800);draw();">
+<canvas id="gameCanvas" width="800" height="800"></canvas>
 </body>
 </html>
